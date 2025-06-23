@@ -9,6 +9,8 @@ class Contact extends Model
 {
     use HasFactory;
 
+    const TIPOVI_BROJA = ['privatni', 'poslovni'];
+
     protected $fillable = [
         'user_id',
         'ime',

@@ -24,7 +24,11 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request): JsonResponse
     {
-        $contact = Contact::create($request->validated());
+        $userId = auth()->id();
+
+        $contact = Contact::create(array_merge($request->validated(), [
+            'user_id' => $userId
+        ]));
 
         return response()->json($contact);
     }

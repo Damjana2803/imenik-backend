@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Contact;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateContactRequest extends FormRequest
 {
@@ -17,12 +20,16 @@ class UpdateContactRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'ime' => 'required|string|max:255',
+            'broj' => 'required|string|max:255',
+            'email' => 'nullable|string|max:255',
+            'tip_broja' => ['sometimes', Rule::in(Contact::TIPOVI_BROJA)],
+            'beleske' => 'nullable|string|max:255',
         ];
     }
 }

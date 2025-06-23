@@ -18,7 +18,7 @@ class ContactFactory extends Factory
             'ime'       => $this->faker->firstName(),
             'broj'      => $this->faker->unique()->e164PhoneNumber(),
             'email'     => $this->faker->unique()->safeEmail(),
-            'tip_broja' => $this->faker->randomElement(['privatni', 'poslovni']),
+            'tip_broja' => $this->faker->randomElement(Contact::TIPOVI_BROJA),
             'beleske'   => $this->faker->optional()->sentence(10),
         ];
     }
