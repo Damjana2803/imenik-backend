@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -10,7 +11,7 @@ use Illuminate\Validation\Rules\Password;
 class AuthController extends Controller
 {
     /** POST /api/register */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:255'],
@@ -28,7 +29,7 @@ class AuthController extends Controller
     }
 
     /** POST /api/login */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         $request->validate([
             'email'    => ['required', 'email'],
@@ -52,7 +53,7 @@ class AuthController extends Controller
     }
 
     /** POST /api/logout */
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         // revoke only the token used for this request
         $request->user()->currentAccessToken()->delete();

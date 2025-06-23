@@ -14,7 +14,7 @@ class ContactController extends Controller
      */
     public function index(): JsonResponse
     {
-        $contacts = Contact::all();
+        $contacts = Contact::where('user_id', auth()->id())->get();
 
         return response()->json($contacts);
     }
@@ -46,6 +46,10 @@ class ContactController extends Controller
      */
     public function update(UpdateContactRequest $request, Contact $contact): JsonResponse
     {
+        if ($contact->user_id !== auth()->id()) {
+            return response()->json('Forbidden.', 403);
+        }
+
         $contact->update($request->validated());
 
         return response()->json($contact);
@@ -54,8 +58,12 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Contact $contact)
+    public function destroy(Contact $contact): JsonResponse
     {
+        if ($contact->user_id !== auth()->id()) {
+            return response()->json('Forbidden.', 403);
+        }
+
         $contact->delete();
 
         return response()->json([], 204);
