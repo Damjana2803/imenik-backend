@@ -38,6 +38,10 @@ class ContactController extends Controller
      */
     public function show(Contact $contact): JsonResponse
     {
+        if ($contact->user_id !== auth()->id()) {
+            return response()->json('Forbidden.', 403);
+        }
+
         return response()->json($contact);
     }
 
