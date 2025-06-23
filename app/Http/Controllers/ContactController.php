@@ -6,15 +6,26 @@ use App\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $contacts = Contact::where('user_id', auth()->id())->get();
+        $contactQuery = Contact::where('user_id', auth()->id());
+
+        if ($search = $request->search) {
+            $contactQuery->where(function ($q) use ($search) {
+                $q->where('ime', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%")
+                    ->orWhere('broj', 'LIKE', "%$search%");
+            });
+        }
+
+        $contacts = $contactQuery->get();
 
         return response()->json($contacts);
     }
