@@ -15,7 +15,7 @@ class ContactController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $contactQuery = Contact::where('user_id', auth()->id());
+        $contactQuery = Contact::where('user_id', auth()->id())->orderBy('ime', 'desc');
 
         if ($search = $request->search) {
             $contactQuery->where(function ($q) use ($search) {
