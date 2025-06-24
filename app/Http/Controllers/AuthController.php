@@ -10,7 +10,6 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    /** POST /api/register */
     public function register(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -28,7 +27,6 @@ class AuthController extends Controller
         return response()->json($user, 201);
     }
 
-    /** POST /api/login */
     public function login(Request $request): JsonResponse
     {
         $request->validate([
@@ -42,7 +40,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // create a new token called “api”
         $token = $user->createToken('api')->plainTextToken;
 
         return response()->json([
@@ -52,10 +49,8 @@ class AuthController extends Controller
         ]);
     }
 
-    /** POST /api/logout */
     public function logout(Request $request): JsonResponse
     {
-        // revoke only the token used for this request
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out']);
